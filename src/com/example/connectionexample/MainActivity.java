@@ -28,34 +28,34 @@ public class MainActivity extends Activity {
     }
     
     public void connectToService(View view) {
-    	// Tratar de acceder a la informaci—n.
+    	// Tratar de acceder a la informaciï¿½n.
 		if (connector.checkConnectivity(this)) {
-			new ConnectGetTask().execute(
+			new ConnectTask().execute(
 				"http://androidexample.phpfogapp.com/index.php?/welcome/hello", "GET");
 		}
 		// Mostrar el error de no haber conectividad.
 		else {
 			Toast.makeText(MainActivity.this,
-				"No hay conectividad, no se ha podido cargar la informaci—n.",
+				"No hay conectividad, no se ha podido cargar la informaciï¿½n.",
 				Toast.LENGTH_LONG).show();
 		}
 	}
     
     public void connectToServicePost(View view) {
-    	// Tratar de acceder a la informaci—n.
+    	// Tratar de acceder a la informaciï¿½n.
 		if (connector.checkConnectivity(this)) {
-			new ConnectGetTask().execute(
+			new ConnectTask().execute(
 				"http://androidexample.phpfogapp.com/index.php?/welcome/echoPostParams", "POST");
 		}
 		// Mostrar el error de no haber conectividad.
 		else {
 			Toast.makeText(MainActivity.this,
-				"No hay conectividad, no se ha podido cargar la informaci—n.",
+				"No hay conectividad, no se ha podido cargar la informaciï¿½n.",
 				Toast.LENGTH_LONG).show();
 		}
 	}
     
-    private class ConnectGetTask extends AsyncTask<String, Void, String> {
+    private class ConnectTask extends AsyncTask<String, Void, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 				List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 				
 				// Si ha sido ingresado algo en el campo de texto entonces
-				// se manda como par‡metro.
+				// se manda como parï¿½metro.
 				String enteredText = editText.getText().toString();
 				if(!TextUtils.isEmpty(enteredText)) {
 					postParams.add(new BasicNameValuePair("sendParam", enteredText));
@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 		
 		@Override
 		protected void onPostExecute(String result) {
-			Toast.makeText(MainActivity.this, "Informaci—n recuperada: [" + result + "]",
+			Toast.makeText(MainActivity.this, "InformaciÃ³n recuperada: [" + result + "]",
 				Toast.LENGTH_LONG).show();
 		}
     	

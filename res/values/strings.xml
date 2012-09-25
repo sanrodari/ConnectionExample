@@ -7,5 +7,11 @@
     <string name="connect_to_service">Conectar via GET</string>
     <string name="connect_to_service_via_post">Conectar via POST</string>
     <string name="hint">Parámetro a ser retornado.</string>
+    <string name="title_activity_hotel_list">HotelList</string>
+    <string name="new_hotel">Nuevo hotel</string>
+    <string name="title_activity_new_hotel">NewHotel</string>
+    <string name="hotel_name">Nombre del hotel</string>
+    <string name="reservation_value">Valor reserva</string>
+    <string name="create_hotel">Crear nuevo hotel</string>
 
 </resources>
