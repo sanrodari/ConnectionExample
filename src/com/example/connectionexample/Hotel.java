@@ -1,5 +1,10 @@
 package com.example.connectionexample;
 
+/**
+ * Para representar un hotel.
+ * 
+ * @author sanrodari
+ */
 public class Hotel {
 	
 	private long id;

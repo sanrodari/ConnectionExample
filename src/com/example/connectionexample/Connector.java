@@ -13,14 +13,27 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/**
+ * Clase para realizar las conexiones por medio del Apache HTTP Client.
+ * @author sanrodari
+ */
 public class Connector {
-	
+
+	/**
+	 * Verifica la disponibilidad de acceso a Internet del dispositivo.
+	 * 
+	 * @param context Contexto de la aplicaci贸n.
+	 * @return true de haber disponibilidad.
+	 */
 	public boolean checkConnectivity(Context context) {
 		ConnectivityManager connMgr = (ConnectivityManager)
 			context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -29,19 +42,40 @@ public class Connector {
 		return networkInfo != null && networkInfo.isConnected();
 	}
 	
+	/**
+	 * Realiza una petici贸n GET a una URL determinada.
+	 * 
+	 * @param url URL a la que se desea realizar la petici贸n.
+	 * @return Cadena con la respuesta del servidor, si ocurre una excepci贸n se retorna null.
+	 */
 	public String doGet(final String url) {
 		try {
-			HttpClient httpclient = new DefaultHttpClient();
+			HttpParams httpParameters = new BasicHttpParams();
+			// Se ponen 3 segundos de timeout.
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
+			
+			HttpClient httpclient = new DefaultHttpClient(httpParameters);
 			HttpResponse response = httpclient.execute(new HttpGet(url));
 			return convertHttpResponseToString(response);
 		} catch (Exception e) {
-			Log.e(Constants.TAG, "No se ha podido realizar la conexi梟.");
-			throw new IllegalStateException("No se ha podido realizar la conexi梟.", e);
+			Log.e(Constants.TAG, "No se ha podido realizar la conexi贸n.");
+			return null;
 		}
 	}
 	
+	/**
+	 * Realiza una petici贸n POST a una URL determinada.
+	 * 
+	 * @param url URL a la que se desea realizar la petici贸n.
+	 * @param nameValuePairs Par谩metros de la petici贸n POST.
+	 * @return Cadena con la respuesta del servidor, si ocurri贸 una excepci贸n se retorna null.
+	 */
 	public String doPost(String url, List<NameValuePair> nameValuePairs) {
-	    HttpClient httpclient = new DefaultHttpClient();
+		HttpParams httpParameters = new BasicHttpParams();
+		// Se ponen 3 segundos de timeout.
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
+		
+	    HttpClient httpclient = new DefaultHttpClient(httpParameters);
 	    HttpPost httpPost = new HttpPost(url);
 
 	    try {
@@ -50,8 +84,8 @@ public class Connector {
 	        HttpResponse response = httpclient.execute(httpPost);
 	        return convertHttpResponseToString(response);
 	    } catch (Exception e) {
-			Log.e(Constants.TAG, "No se ha podido realizar la conexi梟.");
-			throw new IllegalStateException("No se ha podido realizar la conexi梟.", e);
+			Log.e(Constants.TAG, "No se ha podido realizar la conexi贸n.");
+			return null;
 		}
 	}
 	
@@ -70,9 +104,8 @@ public class Connector {
 				throw new IOException(statusLine.getReasonPhrase());
 			}
 		} catch (Exception e) {
-			Log.e(Constants.TAG, "No se ha podido realizar la conexi梟.");
-			throw new IllegalStateException("No se ha podido realizar la conexi梟.", e);
+			Log.e(Constants.TAG, "No se ha podido realizar la conexi贸n.");
+			return null;
 		}
 	}
-
 }

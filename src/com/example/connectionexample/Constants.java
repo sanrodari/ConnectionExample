@@ -2,6 +2,6 @@ package com.example.connectionexample;
 
 public interface Constants {
 	
-	String TAG = "ConnectionExaple";
+	String TAG = "ConnectionExample";
 
 }

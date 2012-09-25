@@ -20,9 +20,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Actividad que tiene la lista de hoteles recuperados.
+ * 
+ * @author sanrodari
+ */
 public class HotelList extends Activity {
 
+	/**
+	 * Widget para mostrar la lista de hoteles.
+	 */
 	private ListView hotelList;
+	
+	/**
+	 * Objeto que nos permite hacer las conexiones.
+	 */
 	private Connector connector = new Connector();
 	
     @Override
@@ -32,7 +44,10 @@ public class HotelList extends Activity {
         
         hotelList = (ListView) findViewById(R.id.hotelList);
     }
-    
+
+    /**
+     * Se realiza la carga de hoteles por medio de la tarea QueryHotels.
+     */
     @Override
     protected void onStart() {
     	super.onStart();
@@ -48,18 +63,35 @@ public class HotelList extends Activity {
     	}
     }
     
+    /**
+     * Se navega a la actividad para crear nuevos hoteles.
+     * @param view
+     */
     public void newHotelClick(View view) {
     	Intent intent = new Intent(this, NewHotel.class);
     	startActivity(intent);
 	}
     
+    /**
+     * Tarea que realiza la consulta de los hoteles. 
+     * 
+     * @author sanrodari
+     */
     private class QueryHotelsTask extends AsyncTask<Void, Void, String[]> {
+    	
+    	/**
+    	 * Se hace la petición al WS.
+    	 */
 		@Override
 		protected String[] doInBackground(Void... voids) {
 			try {
 				List<Hotel> recoveryHotels = new ArrayList<Hotel>();
 				
 				String hotelsJsonString = connector.doGet("http://androidexample.phpfogapp.com/index.php?/hotels/all");
+				if(hotelsJsonString == null) {
+					return new String[]{ "Error al tratar de conectar con el servidor." };
+				}
+				
 				JSONArray hotelsArray = new JSONArray(hotelsJsonString);
 				
 				for (int i = 0; i < hotelsArray.length(); i++) {
@@ -90,14 +122,17 @@ public class HotelList extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 				
-				Log.e("ConnectionExample", "Error al interpertrar la respuesta del servidor.");
+				Log.e("ConnectionExample", "Error al interpretrar la respuesta del servidor.");
 				Toast.makeText(HotelList.this,
 						"Error al interpertrar la respuesta del servidor.",
 						Toast.LENGTH_LONG).show();
 				return new String[]{"Error al interpertrar la respuesta del servidor."};
 			}
 		}
-		
+
+		/**
+		 * Se pone la lista con la información.
+		 */
 		@Override
 		protected void onPostExecute(final String[] result) {
 			hotelList.setAdapter(new BaseAdapter() {

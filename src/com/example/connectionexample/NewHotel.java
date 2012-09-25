@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -17,12 +16,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Actividad para crear un nuevo hotel.
+ * 
+ * @author sanrodari
+ */
 public class NewHotel extends Activity {
 
+	/**
+	 * Objeto que nos permite hacer las conexiones.
+	 */
     private Connector connector = new Connector();
     
+    /**
+     * Campo de texto para el nombre.
+     */
     private EditText nameEdit;
     
+    /**
+     * Campo de texto para el valor de la reserva por noche.
+     */
     private EditText reservationValueEdit;
 
 	@Override
@@ -34,8 +47,15 @@ public class NewHotel extends Activity {
 		reservationValueEdit = (EditText) findViewById(R.id.reservationValueEdit);
     }
     
+	/**
+	 * Cuando se ejecuta el botón de creación de un nuevo hotel se delega esto
+	 * a la tarea NewHotel que es la encargada de interactuar con el WS.
+	 * @param view
+	 */
     public void createNewHotelClick(View view) {
 		if (connector.checkConnectivity(this) && validateForm()) {
+			// TODO Acá se debe realizar una verificación de la entrada de los
+			// usuarios para evitar ataques de inyección de código.
 			new NewHotelTask().execute(
 				nameEdit.getText().toString(), reservationValueEdit.getText().toString());
 		}
@@ -53,7 +73,17 @@ public class NewHotel extends Activity {
 		}
 	}
     
+    /**
+     * Tarea encarga de obtener los datos del formulario de nuevo hotel y 
+     * enviarlos al WS de creación de nuevo hotel. 
+     * @author sanrodari
+     */
     private class NewHotelTask extends AsyncTask<String, Void, String> {
+    	
+    	/**
+    	 * Configura y realiza la petición POST con los parámetros ingresados
+    	 * por el usuario.
+    	 */
     	@Override
     	protected String doInBackground(String... params) {
     		try {
@@ -75,7 +105,7 @@ public class NewHotel extends Activity {
 				else {
 					return responseJson.getString("message");
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				
 				Log.e("ConnectionExample", "Error al interpertrar la respuesta del servidor.");
@@ -83,6 +113,9 @@ public class NewHotel extends Activity {
 			}
     	}
     	
+    	/**
+    	 * Notifica el resultado al usuario y finaliza la actividad.
+    	 */
     	@Override
     	protected void onPostExecute(String result) {
     		// Cuando ocurrió un error al interpretar la respuesta.
