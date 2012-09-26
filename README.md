@@ -41,6 +41,10 @@ El método `all` del [controlador][hotels-controller] consulta los hoteles
 existentes y los codifica como JSON por medio de la instrucción 
 `json_encode($hotels)`.
 
+### JSON Generado
+
+<img src="https://raw.github.com/sanrodari/ConnectionExample/master/guide-resources/json-hotels.png"></img>
+
 ### Tabla de hoteles
 
 <img src="https://raw.github.com/sanrodari/ConnectionExample/master/guide-resources/table-hotels.png"></img>
